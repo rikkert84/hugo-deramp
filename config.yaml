@@ -1,4 +1,49 @@
-baseURL: "http://hugo-quickstart-template.netlify.com"
-languageCode: "en-us"
-title: "Netlify + Hugo Quickstart"
-theme: "netlify-basic"
+baseURL: 'https://ramp.nl/'
+languageCode: 'nl-NL'
+title: 'Namen Watersnoodramp 1953'
+pagination.pagerSize: 10
+
+theme: ['PaperMod']
+
+taxonomies:
+  plaatsnaam: 'plaatsen'
+  tag: 'tags'
+
+enableRobotsTXT: true
+buildDrafts: false
+
+params:
+  env: production
+  description: 'Herdenkingssite met namen, plaatsen en herinneringen.'
+  defaultTheme: auto
+  ShowReadingTime: true
+  disableThemeToggle: false
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: false
+  ShowRssButtonInSectionTermList: true
+  ShowAllPagesInListsWithPagination: false
+  ShowReadingProgressBar: true
+
+services:
+  googleAnalytics:
+    disable: true  # Voorkomt call naar GA-partial
+
+  homeInfoParams:
+    Title: 'Watersnoodramp 1953 Herdenking'
+    Content: 'Herinner de slachtoffers met namen, plaatsen en persoonlijke herinneringen.'
+
+menu:
+  main:
+  - identifier: namen
+    name: Namen
+    url: /namen/
+    weight: 1
+  - identifier: plaatsen
+    name: Plaatsen
+    url: /plaatsen/
+    weight: 2
+  - identifier: herinneringen
+    name: Herinneringen
+    url: /herinneringen/
+    weight: 3

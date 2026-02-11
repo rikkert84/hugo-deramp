@@ -1,0 +1,8 @@
+{{ define "main" }}
+<h1>Alle Namen ({{ .Pages.Len }})</h1>
+<ul>
+  {{ range .Pages.ByParam "sorteren" }}
+    <li><a href="{{ .Permalink }}">{{ .Title }}</a> ({{ .Params.leeftijd }})</li>
+  {{ end }}
+</ul>
+{{ end }}

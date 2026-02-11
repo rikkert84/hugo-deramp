@@ -1,0 +1,58 @@
+{{ define "main" }}
+<article class="post-single">
+  <h1 class="post-title">{{ .Title }}</h1>
+  
+  <!-- Basisinfo in tabel -->
+  <div class="naam-details">
+    <table class="naam-info">
+      <tr><th>Sorteren als:</th><td>{{ .Params.sorteren | default .Title }}</td></tr>
+      <tr><th>Geboorteplaats:</th><td>{{ .Params.geboorteplaats }}</td></tr>
+      <tr><th>Geboortedatum:</th><td>{{ .Params.geboortedatum }}</td></tr>
+      <tr><th>Overlijdensplaats:</th><td>{{ .Params.overlijdensplaats }}</td></tr>
+      <tr><th>Overlijdensdatum:</th><td>{{ .Params.overlijdensdatum }}</td></tr>
+      <tr><th>Leeftijd:</th><td>{{ .Params.leeftijd }} jaar</td></tr>
+    </table>
+  </div>
+
+  <!-- Beschrijving -->
+  <div class="post-content">
+    {{ .Content }}
+  </div>
+
+  <!-- Plaatsen -->
+  {{ if .Params.plaatsen }}
+  <section class="plaats-section">
+    <h3>Plaatsen</h3>
+    {{ range .Params.plaatsen }}
+      <a href="/plaatsen/{{ . }}/" class="badge">{{ . | title | replace "-" " " }}</a>
+    {{ end }}
+  </section>
+  {{ end }}
+
+  <!-- Gekoppelde Herinneringen -->
+  {{ if .Params.herinneringen }}
+  <section class="herinneringen-section">
+    <h3>Herinneringen</h3>
+    <ul class="herinneringen-list">
+      {{ range .Params.herinneringen }}
+        {{ $herinnering := site.GetPage (printf "/herinneringen/%s" .) }}
+        {{ if $herinnering }}
+          <li>
+            <a href="{{ $herinnering.Permalink }}">{{ $herinnering.Title }}</a> 
+            <small>door {{ index $herinnering.Params "auteur" }}</small>
+            ({{ $herinnering.Date.Format "2006" }})
+          </li>
+        {{ else }}
+          <li><em>Herinnering '{{ . }}' niet gevonden</em></li>
+        {{ end }}
+      {{ end }}
+    </ul>
+  </section>
+  {{ end }}
+
+  <!-- Terug naar lijst -->
+  <div class="post-nav">
+    <a href="/namen/" class="btn">← Alle namen</a>
+  </div>
+</article>
+{{ end }}

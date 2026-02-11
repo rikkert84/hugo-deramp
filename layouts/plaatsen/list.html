@@ -1,0 +1,15 @@
+{{ define "main" }}
+<h1>Alle Plaatsen ({{ len $.Data.Terms }})</h1>
+
+<div class="plaatsen-grid">
+  {{ range $.Data.Pages }}
+    <article class="plaats-card">
+      <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+      <p>{{ .Description | plainify | truncate 120 }}</p>
+      {{ if .Params.aantal_slachtoffers }}
+        <span class="slachtoffers-badge">{{ .Params.aantal_slachtoffers }} slachtoffers</span>
+      {{ end }}
+    </article>
+  {{ end }}
+</div>
+{{ end }}

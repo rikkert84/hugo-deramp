@@ -2,10 +2,9 @@
 <article class="post-single">
   <h1 class="post-title">{{ .Title }}</h1>
   
-  <!-- Basisinfo in tabel -->
+  <!-- Basisinfo tabel (je code) -->
   <div class="naam-details">
     <table class="naam-info">
-      <tr><th>Sorteren als:</th><td>{{ .Params.sorteren | default .Title }}</td></tr>
       <tr><th>Geboorteplaats:</th><td>{{ .Params.geboorteplaats }}</td></tr>
       <tr><th>Geboortedatum:</th><td>{{ .Params.geboortedatum }}</td></tr>
       <tr><th>Overlijdensplaats:</th><td>{{ .Params.overlijdensplaats }}</td></tr>
@@ -29,28 +28,51 @@
   </section>
   {{ end }}
 
-  <!-- Gekoppelde Herinneringen -->
+  <!-- VOLLEDIGE HERINNERINGEN INLINE -->
   {{ if .Params.herinneringen }}
   <section class="herinneringen-section">
-    <h3>Herinneringen</h3>
-    <ul class="herinneringen-list">
-      {{ range .Params.herinneringen }}
-        {{ $herinnering := site.GetPage (printf "/herinneringen/%s" .) }}
-        {{ if $herinnering }}
-          <li>
-            <a href="{{ $herinnering.Permalink }}">{{ $herinnering.Title }}</a> 
-            <small>door {{ index $herinnering.Params "auteur" }}</small>
-            ({{ $herinnering.Date.Format "2006" }})
-          </li>
-        {{ else }}
-          <li><em>Herinnering '{{ . }}' niet gevonden</em></li>
-        {{ end }}
+    <h2>Herinneringen</h2>
+    {{ range .Params.herinneringen }}
+      {{ $herinnering := site.GetPage (printf "/herinneringen/%s" .) }}
+      {{ if $herinnering }}
+        <article class="herinnering-item">
+          <header class="herinnering-header">
+            <h4>{{ $herinnering.Title }}</h4>
+            <p class="herinnering-meta">
+              <strong>{{ index $herinnering.Params "auteur" | default "Anoniem" }}</strong>
+              {{ if $herinnering.Date.Format "2006" }}• {{ $herinnering.Date.Format "2 Jan 2006" }}{{ end }}
+            </p>
+          </header>
+          
+          <!-- Volledige herinnering content -->
+          <div class="herinnering-content">
+            {{ $herinnering.Content | truncate 800 "..." }}
+            {{ if gt (len $herinnering.Content) 800 }}
+              <a href="{{ $herinnering.Permalink }}" class="lees-meer">Volledige herinnering →</a>
+            {{ end }}
+          </div>
+          
+          <!-- Afbeeldingen -->
+          {{ if $herinnering.Params.afbeeldingen }}
+            <div class="herinnering-images">
+              {{ range $herinnering.Params.afbeeldingen }}
+                {{ if .src }}
+                  <figure>
+                    <img src="{{ .src | absURL }}" alt="{{ .caption | default "Herinnering foto" }}">
+                    {{ if .caption }}<figcaption>{{ .caption }}</figcaption>{{ end }}
+                  </figure>
+                {{ end }}
+              {{ end }}
+            </div>
+          {{ end }}
+        </article>
+      {{ else }}
+        <p class="error">Herinnering '{{ . }}' niet gevonden.</p>
       {{ end }}
-    </ul>
+    {{ end }}
   </section>
   {{ end }}
 
-  <!-- Terug naar lijst -->
   <div class="post-nav">
     <a href="/namen/" class="btn">← Alle namen</a>
   </div>

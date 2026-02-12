@@ -1,8 +1,8 @@
 ---
-title: 'Jacoba Aalbregtse'
-sorteren: 'Aalbregtse, Jacoba'
+title: 'Johannis Aalbregtse'
+sorteren: 'Aalbregtse, Johannis'
 geboorteplaats: 'Nieuwerkerk'
-geboortedatum: '1950-09-07'
+geboortedatum: '1919-12-19'
 overlijdensplaats: 'Nieuwerkerk'
 overlijdensdatum: '1953-02-01'
 plaatsen: ['nieuwerkerk']

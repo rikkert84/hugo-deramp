@@ -1,0 +1,46 @@
+.herinneringen-section {
+  margin: 3rem 0;
+  border-top: 2px solid #eee;
+  padding-top: 2rem;
+}
+
+.herinnering-item {
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-left: 5px solid #007cba;
+  border-radius: 0 8px 8px 0;
+}
+
+.herinnering-header h4 {
+  margin: 0 0 0.5rem 0;
+  color: #1a1a1a;
+}
+
+.herinnering-meta {
+  margin: 0 0 1rem 0;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.herinnering-content {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.herinnering-images {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.herinnering-images img {
+  max-width: 300px;
+  height: auto;
+  margin: 0.5rem;
+}
+
+.herinnering-images figcaption {
+  font-style: italic;
+  color: #666;
+  font-size: 0.85em;
+}

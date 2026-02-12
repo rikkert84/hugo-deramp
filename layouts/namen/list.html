@@ -1,8 +1,74 @@
 {{ define "main" }}
-<h1>Alle Namen ({{ .Pages.Len }})</h1>
-<ul>
+<h1>Slachtoffers Watersnood 1953</h1>
+
+<!-- Filter UI -->
+<div id="namen-filters">
+  <input type="text" id="namen-search" placeholder="Zoek op naam...">
+  <select id="plaatsen-filter">
+    <option value="">Alle plaatsen</option>
+    {{/* Dynamisch alle unieke plaatsen */}}
+    {{ $plaatsen := slice }}
+    {{ range .Pages }}
+      {{ range .Params.plaatsen }}
+        {{ if not (in $plaatsen .) }}
+          {{ $plaatsen = $plaatsen | append . }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+    {{ range $plaatsen }}
+      <option value="{{ . | lower }}">{{ . | title }}</option>
+    {{ end }}
+  </select>
+</div>
+
+<!-- Grid advertenties -->
+<div class="namen-grid">
   {{ range .Pages.ByParam "sorteren" }}
-    <li><a href="{{ .Permalink }}">{{ .Title }}</a> ({{ .Params.leeftijd }})</li>
+    {{ $plaatsenStr := delimit (apply (default (slice) .Params.plaatsen) "lower" ".") "," }}
+    <div class="overlijdens-advertentie" 
+         data-naam="{{ .Title | lower }}"
+         data-plaatsen="{{ $plaatsenStr }}">
+      <div class="advertentie-inner">
+        <h3 class="naam">{{ .Title }}</h3>
+        {{ if or .Params.geboortedatum .Params.geboorteplaats }}
+        <div class="geb">
+          <strong>Geb.</strong> {{ .Params.geboortedatum | time.AsTime | time.Format "2 Jan 2006" }}
+          {{ if .Params.geboorteplaats }} te {{ .Params.geboorteplaats }}{{ end }}
+        </div>
+        {{ end }}
+        <div class="overl">
+          <strong>Overleden</strong> te {{ .Params.overlijdensplaats }}
+        </div>
+        <a href="{{ .Permalink }}" class="lees-meer">Details →</a>
+      </div>
+    </div>
   {{ end }}
-</ul>
+</div>
+
+<!-- CRUCIAAL: JavaScript filter -->
+<script>
+(function() {
+  const searchInput = document.getElementById('namen-search');
+  const plaatsSelect = document.getElementById('plaatsen-filter');
+  const items = document.querySelectorAll('.overlijdens-advertentie');
+
+  function applyFilter() {
+    const q = searchInput.value.toLowerCase().trim();
+    const plaats = plaatsSelect.value.toLowerCase();
+
+    items.forEach(item => {
+      const naam = item.dataset.naam || '';
+      const plaatsen = item.dataset.plaatsen || '';
+
+      const matchNaam = !q || naam.includes(q);
+      const matchPlaats = !plaats || plaatsen.includes(plaats);
+
+      item.style.display = (matchNaam && matchPlaats) ? '' : 'none';
+    });
+  }
+
+  searchInput.addEventListener('input', applyFilter);
+  plaatsSelect.addEventListener('change', applyFilter);
+})();
+</script>
 {{ end }}

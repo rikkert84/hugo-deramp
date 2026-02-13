@@ -1,4 +1,5 @@
 ---
-title: 'Alle Plaatsen'
+title: "Alle Plaatsen"
+layout: plaatsen-terms  # Optioneel
 ---
-Overzicht plaatsen getroffen door de ramp.
+Overzicht getroffen plaatsen Watersnoodramp 1953.

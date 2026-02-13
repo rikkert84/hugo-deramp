@@ -7,8 +7,9 @@ pagination.pagerSize: 10
 theme: ['PaperMod']
 
 taxonomies:
-  plaatsnaam: plaatsen  # singular → plural map!
+  plaatsnaam: 'plaatsen'  # singular → plural map!
   tag: 'tags'
+  
 
 enableRobotsTXT: true
 buildDrafts: false

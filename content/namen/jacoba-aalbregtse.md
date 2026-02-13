@@ -5,7 +5,8 @@ geboorteplaats: 'Nieuwerkerk'
 geboortedatum: '1950-09-07'
 overlijdensplaats: 'Nieuwerkerk'
 overlijdensdatum: '1953-02-01'
-plaatsen: ['nieuwerkerk']
+plaatsnaam:  # ← ZEKER singular!
+  - nieuwkerk
 leeftijd: 2  # Berekend: 1953-1950
 herinneringen: 
   - 'aalbregtse-jacoba-cobie'

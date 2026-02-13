@@ -34,7 +34,10 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
 
 // Overstromingsgebieden - dunnere rand
 L.polygon([
-  [51.83, 3.98], [51.85, 3.98], [51.85, 4.05], [51.83, 4.05], [51.83, 3.98]
+  // Zeeuwse delta + Biesbosch
+  [51.45, 3.85], [51.40, 4.00], [51.35, 4.20], 
+  [51.50, 4.45], [51.70, 4.50], [51.85, 4.35],
+  [51.88, 4.15], [51.82, 3.95], [51.45, 3.85]
 ], {
   color: '#4a90e2',        // ← Helderblauw ipv donker
   weight: 1.5,             // ← 1.5px ipv 3px

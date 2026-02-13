@@ -9,7 +9,6 @@ theme: ['PaperMod']
 taxonomies:
   plaatsnaam: plaatsen  # singular → plural map!
   tag: 'tags'
-  
 
 enableRobotsTXT: true
 buildDrafts: false

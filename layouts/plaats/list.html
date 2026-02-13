@@ -1,7 +1,21 @@
 {{ define "main" }}
+
+<h2>DEBUG: {{ len .Pages }} pagina's</h2>
+{{ range .Pages }}
+  <details>
+    <summary>{{ .Title }}</summary>
+    <p>Coördinaten: "{{ .Params.coördinaten }}"</p>
+    <p>Params: {{ printf "%#v" .Params }}</p>
+  </details>
+{{ end }}
+
+
 <h1>Plaatsen ({{ len .Pages }})</h1>
 
-<div class="plaats-grid">
+<!-- Interactieve Zeeland kaart -->
+<div id="zeeland-map" style="height: 600px;"></div>
+
+<div class="plaatsen-grid">
 {{ range .Pages }}
   <div class="plaats-card">
     <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
@@ -9,12 +23,37 @@
       <span class="badge">{{ .Params.aantal_slachtoffers }} slachtoffers</span>
     {{ end }}
     {{ if .Params.coördinaten }}
-      <small>📍 {{ .Params.coördinaten }}</small>
+      <button onclick="zoomTo({{ .Params.coördinaten | split ',' | first }}, {{ .Params.coördinaten | split ',' | last }})">Zoom kaart</button>
     {{ end }}
   </div>
 {{ end }}
 </div>
 
-<!-- DEBUG -->
-<p><strong>Debug:</strong> {{ len .Pages }} pagina's geladen</p>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+const map = L.map('zeeland-map').setView([51.5, 3.8], 10);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+// DYNAMISCHE MARKERS uit content/plaatsen/
+{{ range .Pages }}
+  {{ $coords := split .Params.coördinaten "," }}
+  {{ if eq (len $coords) 2 }}
+    {{ $lat := strings.TrimSpace (index $coords 0) | float }}
+    {{ $lng := strings.TrimSpace (index $coords 1) | float }}
+    console.log('{{ .Title }}:', {{ $lat }}, {{ $lng }});
+    {{ if and (ge $lat 50) (le $lat 54) }}
+      L.marker([{{ $lat }}, {{ $lng }}]).bindPopup('{{ .Title }}').addTo(map);
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+console.log('Markers toegevoegd: {{ len .Pages }} plaatsen');
+</script>
+
+
+
+
+
 {{ end }}

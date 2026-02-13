@@ -1,0 +1,43 @@
+{{ define "main" }}
+<h1>{{ .Title }} ({{ len .Data.Terms }})</h1>
+
+<div id="zeeland-map" style="height: 600px; margin: 2rem 0;"></div>
+
+<!-- Lijst plaatsen -->
+<ul class="plaatsen-lijst">
+{{ range .Data.Terms.ByCount }}
+  <li>
+    <a href="{{ .Page.Permalink }}">{{ .Page.Title }}</a> 
+    ({{ .Count }} slachtoffers)
+  </li>
+{{ end }}
+</ul>
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+const plaatsen = [
+{{ range .Data.Terms }}
+  {
+    naam: "{{ .Page.Title | safeJS }}",
+    lat: {{ or (.Page.Params.coördinaten | split "," | first | strings.TrimSpace | float) 51.5 }},
+    lng: {{ or (.Page.Params.coördinaten | split "," | last | strings.TrimSpace | float) 3.8 }},
+    url: "{{ .Page.Permalink | safeJS }}"
+  },
+{{ end }}
+];
+
+console.log('Plaatsen:', plaatsen); // Debug
+
+const map = L.map('zeeland-map').setView([51.5, 3.8], 10);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+plaatsen.forEach(p => {
+  if (!isNaN(p.lat) && !isNaN(p.lng)) {
+    L.marker([p.lat, p.lng]).bindPopup(p.naam).addTo(map);
+  }
+});
+</script>
+{{ end }}

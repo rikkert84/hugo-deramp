@@ -1,9 +1,0 @@
-{{ define "main" }}
-<h1>TEST: {{ .Title }}</h1>
-<p>Aantal termen: {{ len .Data.Terms }}</p>
-<ul>
-{{ range .Data.Terms }}
-  <li>{{ .Page.Title }} ({{ .Count }})</li>
-{{ end }}
-</ul>
-{{ end }}

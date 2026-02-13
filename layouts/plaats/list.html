@@ -32,17 +32,26 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
 
 //demo
 
-// Direct in template (geen fetch)
+// Overstromingsgebieden - dunnere rand
 L.polygon([
-  [51.82, 4.00], [51.84, 4.00], [51.84, 4.03], 
-  [51.82, 4.03], [51.82, 4.00]
+  [51.83, 3.98], [51.85, 3.98], [51.85, 4.05], [51.83, 4.05], [51.83, 3.98]
 ], {
-  color: '#2980b9',
-  fillColor: '#3498db',
-  fillOpacity: 0.3,
-  weight: 2
-}).bindPopup('Nieuwkerk gebied<br>245 slachtoffers')
-.addTo(map);
+  color: '#4a90e2',        // ← Helderblauw ipv donker
+  weight: 1.5,             // ← 1.5px ipv 3px
+  fillColor: '#4a90e2',
+  fillOpacity: 0.25,
+  opacity: 0.9             // ← Rand transparant
+}).bindPopup('<b>Nieuwerkerk gebied</b><br>245 slachtoffers').addTo(map);
+
+L.polygon([
+  [51.70, 4.10], [51.72, 4.10], [51.72, 4.20], [51.70, 4.20], [51.70, 4.10]
+], {
+  color: '#4a90e2',
+  weight: 1.5,
+  fillColor: '#4a90e2',
+  fillOpacity: 0.25,
+  opacity: 0.9
+}).bindPopup('Tweede rampgebied').addTo(map);
 
 //einde demo
 

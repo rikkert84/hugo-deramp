@@ -1,0 +1,67 @@
+layouts/plaatsen/taxonomy.html voor detailpagina van één plaats (bijv. /plaatsen/nieuwkerk/).
+​
+
+Volledige layouts/plaatsen/taxonomy.html
+xml
+{{ define "main" }}
+<article class="plaats-detail">
+  <header class="plaats-header">
+    <h1>{{ .Title }}</h1>
+    {{ if .Description }}
+      <p class="plaats-summary">{{ .Description }}</p>
+    {{ end }}
+  </header>
+
+  <!-- Plaats info -->
+  <div class="plaats-info">
+    {{ if .Params.coördinaten }}
+      <div id="plaats-map" style="height: 400px; margin: 1.5rem 0;"></div>
+    {{ end }}
+    
+    {{ if .Params.aantal_slachtoffers }}
+      <p class="slachtoffers-count">
+        <strong>{{ .Params.aantal_slachtoffers }}</strong> slachtoffers
+      </p>
+    {{ end }}
+  </div>
+
+  <!-- Beschrijving -->
+  {{ if .Content }}
+    <div class="plaats-content">
+      {{ .Content }}
+    </div>
+  {{ end }}
+
+  <!-- Slachtoffers uit deze plaats -->
+  <section class="slachtoffers-section">
+    <h2>Slachtoffers ({{ len .Data.Pages }})</h2>
+    <div class="namen-grid">  <!-- Hergebruik advertentie-stijl! -->
+      {{ range .Data.Pages.ByParam "sorteren" }}
+        <div class="overlijdens-advertentie">
+          <div class="advertentie-inner">
+            <h3 class="naam"><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+            <div class="geb">{{ .Params.geboortedatum | time.AsTime | time.Format "2 Jan 2006" }} te {{ .Params.geboorteplaats }}</div>
+            <div class="overl">Overleden te {{ .Params.overlijdensplaats }}</div>
+          </div>
+        </div>
+      {{ end }}
+    </div>
+  </section>
+
+  <div class="plaats-nav">
+    <a href="/plaatsen/" class="btn">← Alle plaatsen</a>
+  </div>
+</article>
+
+{{/* Kaart voor deze plaats */}}
+{{ if .Params.coördinaten }}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const [lat, lng] = "{{ .Params.coördinaten }}".split(',').map(n => parseFloat(n.trim()));
+const map = L.map('plaats-map').setView([lat, lng], 14);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+L.marker([lat, lng]).bindPopup('{{ .Title }}').addTo(map);
+</script>
+{{ end }}
+{{ end }}

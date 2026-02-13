@@ -1,18 +1,17 @@
 {{ define "main" }}
-<h1>Slachtoffers Watersnood 1953</h1>
+<h1>Slachtoffers Watersnood 1953 ({{ len .Pages }})</h1>
 
 <!-- Filter UI -->
-<div id="namen-filters">
-  <input type="text" id="namen-search" placeholder="Zoek op naam...">
-  <select id="plaatsen-filter">
+<div id="namen-filters" style="margin: 2rem 0;">
+  <input type="text" id="namen-search" placeholder="🔍 Zoek op naam..." 
+         style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px; margin-right: 1rem;">
+  <select id="plaatsen-filter" style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
     <option value="">Alle plaatsen</option>
-    {{/* Dynamisch alle unieke plaatsen */}}
     {{ $plaatsen := slice }}
     {{ range .Pages }}
-      {{ range .Params.plaatsen }}
-        {{ if not (in $plaatsen .) }}
-          {{ $plaatsen = $plaatsen | append . }}
-        {{ end }}
+      {{ $plaats := .Params.plaatsnaam | default (index .Params.plaatsen 0) }}
+      {{ if and $plaats (not (in $plaatsen $plaats)) }}
+        {{ $plaatsen = $plaatsen | append $plaats }}
       {{ end }}
     {{ end }}
     {{ range $plaatsen }}
@@ -21,31 +20,52 @@
   </select>
 </div>
 
-<!-- Grid advertenties -->
+<!-- Pagination + Grid -->
+{{ $paginator := .Paginate (.Pages.ByParam "sorteren") 50 }}
 <div class="namen-grid">
-  {{ range .Pages.ByParam "sorteren" }}
-    {{ $plaatsenStr := delimit (apply (default (slice) .Params.plaatsen) "lower" ".") "," }}
-    <div class="overlijdens-advertentie" 
-         data-naam="{{ .Title | lower }}"
-         data-plaatsen="{{ $plaatsenStr }}">
-      <div class="advertentie-inner">
-        <h3 class="naam">{{ .Title }}</h3>
-        {{ if or .Params.geboortedatum .Params.geboorteplaats }}
-        <div class="geb">
-          <strong>Geb.</strong> {{ .Params.geboortedatum | time.AsTime | time.Format "2 Jan 2006" }}
-          {{ if .Params.geboorteplaats }} te {{ .Params.geboorteplaats }}{{ end }}
-        </div>
-        {{ end }}
-        <div class="overl">
-          <strong>Overleden</strong> te {{ .Params.overlijdensplaats }}
-        </div>
-        <a href="{{ .Permalink }}" class="lees-meer">Details →</a>
+{{ range $paginator.Pages }}
+  {{ $plaatsStr := .Params.plaatsnaam | default (index (default (slice "") .Params.plaatsen) 0) | lower }}
+  <div class="overlijdens-advertentie" 
+       data-naam="{{ .Title | lower }}"
+       data-plaatsen="{{ $plaatsStr }}"
+       style="margin-bottom: 1rem; padding: 1rem; border: 1px solid #eee; border-radius: 8px;">
+    <div class="advertentie-inner">
+      <h3 class="naam" style="margin: 0 0 0.5rem 0; color: #2c3e50;">{{ .Title }}</h3>
+      {{ if or .Params.geboortedatum .Params.geboorteplaats }}
+      <div class="geb" style="font-size: 0.9rem; color: #7f8c8d;">
+        <strong>Geb.</strong> {{ .Params.geboortedatum | time.AsTime | time.Format "2 Jan 2006" }}
+        {{ if .Params.geboorteplaats }} • {{ .Params.geboorteplaats }}{{ end }}
       </div>
+      {{ end }}
+      {{ if .Params.overlijdensplaats }}
+      <div class="overl" style="font-size: 0.9rem; color: #e74c3c; font-weight: 500;">
+        <strong>Overl.</strong> {{ .Params.overlijdensdatum | time.AsTime | time.Format "2 Jan 2006" }} te {{ .Params.overlijdensplaats }}
+      </div>
+      {{ end }}
+      <a href="{{ .Permalink }}" class="lees-meer" style="display: inline-block; margin-top: 0.5rem; color: #3498db; text-decoration: none; font-weight: 500;">Details →</a>
     </div>
-  {{ end }}
+  </div>
+{{ end }}
 </div>
 
-<!-- CRUCIAAL: JavaScript filter -->
+<!-- Pagination navigatie -->
+{{ if gt $paginator.TotalPages 1 }}
+<div style="text-align: center; margin: 2rem 0; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+  {{ if $paginator.HasPrev }}
+    <a href="{{ $paginator.Prev.URL }}" style="margin: 0 0.5rem; padding: 0.5rem 1rem; background: #3498db; color: white; text-decoration: none; border-radius: 4px;">← Vorige</a>
+  {{ end }}
+  
+  <span style="margin: 0 1rem; font-weight: 500;">
+    Pagina {{ $paginator.PageNumber }} van {{ $paginator.TotalPages }} ({{ $paginator.TotalNumberOfElements }} totaal)
+  </span>
+  
+  {{ if $paginator.HasNext }}
+    <a href="{{ $paginator.Next.URL }}" style="margin: 0 0.5rem; padding: 0.5rem 1rem; background: #3498db; color: white; text-decoration: none; border-radius: 4px;">Volgende →</a>
+  {{ end }}
+</div>
+{{ end }}
+
+<!-- Filter JavaScript -->
 <script>
 (function() {
   const searchInput = document.getElementById('namen-search');
@@ -56,6 +76,7 @@
     const q = searchInput.value.toLowerCase().trim();
     const plaats = plaatsSelect.value.toLowerCase();
 
+    let visibleCount = 0;
     items.forEach(item => {
       const naam = item.dataset.naam || '';
       const plaatsen = item.dataset.plaatsen || '';
@@ -63,12 +84,43 @@
       const matchNaam = !q || naam.includes(q);
       const matchPlaats = !plaats || plaatsen.includes(plaats);
 
-      item.style.display = (matchNaam && matchPlaats) ? '' : 'none';
+      if (matchNaam && matchPlaats) {
+        item.style.display = '';
+        item.style.opacity = '1';
+        visibleCount++;
+      } else {
+        item.style.display = 'none';
+        item.style.opacity = '0';
+      }
     });
+    
+    // Update counter
+    const counter = document.querySelector('#namen-filters');
+    if (visibleCount !== items.length) {
+      counter.insertAdjacentHTML('beforeend', `<span id="filter-count" style="margin-left:1rem;color:#7f8c8d;">(${visibleCount} zichtbaar)</span>`);
+    } else {
+      const countEl = document.getElementById('filter-count');
+      if (countEl) countEl.remove();
+    }
   }
 
   searchInput.addEventListener('input', applyFilter);
   plaatsSelect.addEventListener('change', applyFilter);
 })();
 </script>
+
+<style>
+.namen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+@media (max-width: 768px) {
+  .namen-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
 {{ end }}

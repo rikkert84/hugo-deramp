@@ -1,21 +1,45 @@
+{{ define "main" }}
+<h1>Plaatsen ({{ len .Pages }})</h1>
+
+<!-- Interactieve Zeeland kaart -->
+<div id="zeeland-map" style="height: 600px; margin-bottom: 2rem;"></div>
+
+<div class="plaatsen-grid">
+{{ range .Pages }}
+  <div class="plaats-card">
+    <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+    {{ if .Params.aantal_slachtoffers }}
+      <span class="badge">{{ .Params.aantal_slachtoffers }} slachtoffers</span>
+    {{ end }}
+    {{ if .Params.coördinaten }}
+      <button onclick="zoomTo('{{ .Params.coördinaten }}')">Zoom kaart</button>
+    {{ end }}
+  </div>
+{{ end }}
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <script>
 const map = L.map('zeeland-map').setView([51.65, 4.05], 9);
 
-// Positron (wit/grijs, sober)
+// Positron (sober wit/grijs)
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  maxZoom: 18
 }).addTo(map);
 
-// ✅ SOBER MARKER DEFINITIE
+// Sober marker icon
 const soberIcon = L.divIcon({
   html: '<div style="background:#333; width:8px; height:8px; border-radius:50%; border:1px solid #666;"></div>',
   iconSize: [10, 10],
   iconAnchor: [5, 5],
-  className: 'custom-marker',  /* Geen extra padding */
-  popupAnchor: [0, -10]
+  popupAnchor: [0, -10],
+  className: 'custom-marker'
 });
 
-// Dynamische markers MET sober icon
+// Dynamische markers
 {{ range .Pages }}
   {{ $coords := .Params.coördinaten }}
   {{ if $coords }}
@@ -23,19 +47,27 @@ const soberIcon = L.divIcon({
     {{ if ge (len $parts) 2 }}
       {{ $lat := (index $parts 0 | strings.TrimSpace | float) }}
       {{ $lng := (index $parts 1 | strings.TrimSpace | float) }}
-      L.marker([{{$lat}}, {{$lng}}], { icon: soberIcon })
-        .bindPopup(`
-          <b>{{.Title}}</b><br>
-          {{ .Params.aantal_slachtoffers | default "Onbekend" }} slachtoffers
-        `)
-        .addTo(map);
+      {{ if and (ge $lat 50) (le $lat 54) }}
+        L.marker([{{$lat}}, {{$lng}}], { icon: soberIcon })
+          .bindPopup(`
+            <h4><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
+            <p>{{ .Params.aantal_slachtoffers | default "?" }} slachtoffers</p>
+          `)
+          .addTo(map);
+      {{ end }}
     {{ end }}
   {{ end }}
 {{ end }}
 
-function zoomTo(coords) {
-  const [lat, lng] = coords.split(' ').map(s => parseFloat(s.trim()));
-  map.setView([lat, lng], 14);
+console.log('Markers toegevoegd: {{ len .Pages }} plaatsen');
+
+function zoomTo(coordsStr) {
+  const parts = coordsStr.split(' ');
+  if (parts.length >= 2) {
+    const lat = parseFloat(parts[0].trim());
+    const lng = parseFloat(parts[1].trim());
+    map.setView([lat, lng], 14);
+  }
 }
 </script>
 
@@ -43,5 +75,26 @@ function zoomTo(coords) {
 .custom-marker {
   background: none !important;
   border: none !important;
+  margin: 0 !important;
+}
+.plaatsen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+.plaats-card {
+  padding: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+}
+.badge {
+  background: #e74c3c;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
 }
 </style>
+
+{{ end }}

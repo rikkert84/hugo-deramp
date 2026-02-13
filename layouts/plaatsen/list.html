@@ -38,17 +38,13 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
 // DYNAMISCHE MARKERS uit content/plaatsen/
 {{ range .Pages }}
-  {{ $coords := .Params.coördinaten | split "," }}
-  {{ if $coords }}
-    {{ $lat := ($coords | index 0 | strings.TrimSpace | float) }}
-    {{ $lng := ($coords | index 1 | strings.TrimSpace | float) }}
-    {{ if and (ge $lat 50) (le $lat 54) }}  <!-- Veilige range NL -->
-      L.marker([{{ $lat }}, {{ $lng }}])
-        .bindPopup(`
-          <h4><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
-          <p>{{ .Params.aantal_slachtoffers | default "?" }} slachtoffers</p>
-        `)
-        .addTo(map);
+  {{ $coords := split .Params.coördinaten "," }}
+  {{ if eq (len $coords) 2 }}
+    {{ $lat := strings.TrimSpace (index $coords 0) | float }}
+    {{ $lng := strings.TrimSpace (index $coords 1) | float }}
+    console.log('{{ .Title }}:', {{ $lat }}, {{ $lng }});
+    {{ if and (ge $lat 50) (le $lat 54) }}
+      L.marker([{{ $lat }}, {{ $lng }}]).bindPopup('{{ .Title }}').addTo(map);
     {{ end }}
   {{ end }}
 {{ end }}

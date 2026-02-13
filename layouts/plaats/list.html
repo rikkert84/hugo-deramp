@@ -1,45 +1,47 @@
-{{ define "main" }}
-<h1>Plaatsen ({{ len .Pages }})</h1>
-
-<div id="zeeland-map" style="height: 600px;"></div>
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <script>
-//const map = L.map('zeeland-map').setView([51.65, 4.05], 9);
-//L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 const map = L.map('zeeland-map').setView([51.65, 4.05], 9);
 
-// Clean wit/grijs
+// Positron (wit/grijs, sober)
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> CartoDB'
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
 }).addTo(map);
 
-// DYNAMISCHE MARKERS - originele safe versie
+// ✅ SOBER MARKER DEFINITIE
+const soberIcon = L.divIcon({
+  html: '<div style="background:#333; width:8px; height:8px; border-radius:50%; border:1px solid #666;"></div>',
+  iconSize: [10, 10],
+  iconAnchor: [5, 5],
+  className: 'custom-marker',  /* Geen extra padding */
+  popupAnchor: [0, -10]
+});
+
+// Dynamische markers MET sober icon
 {{ range .Pages }}
   {{ $coords := .Params.coördinaten }}
   {{ if $coords }}
-    {{ $parts := split $coords " " }}  <!-- Spatie ipv komma! -->
+    {{ $parts := split $coords " " }}
     {{ if ge (len $parts) 2 }}
       {{ $lat := (index $parts 0 | strings.TrimSpace | float) }}
       {{ $lng := (index $parts 1 | strings.TrimSpace | float) }}
-      {{ if and (ge $lat 50) (le $lat 54) }}
-        L.marker([{{$lat}}, {{$lng}}])
-          .bindPopup(`
-            <h4><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
-            <p>{{ .Params.aantal_slachtoffers | default "?" }} slachtoffers</p>
-          `)
-          .addTo(map);
-      {{ end }}
+      L.marker([{{$lat}}, {{$lng}}], { icon: soberIcon })
+        .bindPopup(`
+          <b>{{.Title}}</b><br>
+          {{ .Params.aantal_slachtoffers | default "Onbekend" }} slachtoffers
+        `)
+        .addTo(map);
     {{ end }}
   {{ end }}
 {{ end }}
 
-console.log('Markers toegevoegd: {{ len .Pages }} plaatsen');
 function zoomTo(coords) {
-  const [lat, lng] = coords.split(',').map(s => parseFloat(s.trim()));
+  const [lat, lng] = coords.split(' ').map(s => parseFloat(s.trim()));
   map.setView([lat, lng], 14);
 }
 </script>
-{{ end }}
+
+<style>
+.custom-marker {
+  background: none !important;
+  border: none !important;
+}
+</style>

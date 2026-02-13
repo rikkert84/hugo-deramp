@@ -30,6 +30,24 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
   maxZoom: 18
 }).addTo(map);
 
+// OVEREENKOMSTIGE KNOP HIER (direct na tileLayer)
+const overviewBtn = L.Control.extend({
+  onAdd: function(map) {
+    const btn = L.DomUtil.create('div', 'leaflet-bar leaflet-control overview-btn');
+    btn.innerHTML = '📍 Overzicht';
+    btn.style.background = 'white';
+    btn.style.padding = '8px 12px';
+    btn.style.borderRadius = '4px';
+    btn.style.cursor = 'pointer';
+    btn.style.fontSize = '12px';
+    btn.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+    btn.onclick = () => map.setView([51.65, 4.05], 9);
+    return btn;
+  }
+});
+new overviewBtn({ position: 'topleft' }).addTo(map);
+
+ 
 //demo
 
 // Overstromingsgebieden - dunnere rand

@@ -27,14 +27,14 @@
 const map = L.map('map').setView([51.5, 3.8], 10);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-{{ range .Pages }}
-  {{ if .Params.coördinaten }}
-    {{ $coords := split .Params.coördinaten "," }}
-    {{ $lat := (index $coords 0 | strings.TrimSpace) | float }}
-    {{ $lng := (index $coords 1 | strings.TrimSpace) | float }}
-    L.marker([{{$lat}}, {{$lng}}]).bindPopup('{{.Title}} ({{.Params.aantal_slachtoffers}})').addTo(map);
-  {{ end }}
-{{ end }}
+//{{ range .Pages }}
+//  {{ if .Params.coördinaten }}
+//    {{ $coords := split .Params.coördinaten "," }}
+//    {{ $lat := (index $coords 0 | strings.TrimSpace) | float }}
+//    {{ $lng := (index $coords 1 | strings.TrimSpace) | float }}
+//    L.marker([{{$lat}}, {{$lng}}]).bindPopup('{{.Title}} ({{.Params.aantal_slachtoffers}})').addTo(map);
+//  {{ end }}
+//{{ end }}
 
 function zoomTo(lat, lng) { map.setView([parseFloat(lat), parseFloat(lng)], 14); }
 console.log('Markers: {{ len .Pages }}');

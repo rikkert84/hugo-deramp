@@ -1,6 +1,6 @@
 <script>
 console.log('Pages lengte:', {{ len .Pages }});
 {{ range .Pages }}
-  console.log('Pagina:', '{{ .Title }}', 'Coords:', '{{ .Params.coördinaten }}', {{ .Params.lat}});
+  console.log('Pagina:', '{{ .Title }}', 'Coords:', '{{ .Params.coördinaten }}', '{{ .Params.lat}}');
 {{ end }}
 </script>

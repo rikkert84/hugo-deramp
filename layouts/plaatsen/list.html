@@ -1,0 +1,35 @@
+{{ define "main" }}
+<h1>Plaatsen ({{ len .Pages }})</h1>
+
+<!-- Interactieve Zeeland kaart -->
+<div id="zeeland-map" style="height: 600px;"></div>
+
+<div class="plaatsen-grid">
+{{ range .Pages }}
+  <div class="plaats-card">
+    <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+    {{ if .Params.aantal_slachtoffers }}
+      <span class="badge">{{ .Params.aantal_slachtoffers }} slachtoffers</span>
+    {{ end }}
+    {{ if .Params.coördinaten }}
+      <button onclick="zoomTo({{ .Params.coördinaten | split ',' | first }}, {{ .Params.coördinaten | split ',' | last }})">Zoom kaart</button>
+    {{ end }}
+  </div>
+{{ end }}
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const map = L.map('zeeland-map').setView([51.5, 3.8], 10);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+// Hardcoded markers (tot data werkt)
+L.marker([51.8333, 4.0167]).bindPopup('Nieuwkerk').addTo(map);
+L.marker([51.6500, 3.8456]).bindPopup('Zierikzee').addTo(map);
+
+function zoomTo(lat, lng) {
+  map.setView([lat, lng], 14);
+}
+</script>
+{{ end }}

@@ -2,7 +2,7 @@
 title: 'Nieuwerkerk'
 description: 'Nieuwkerk op Goeree-Overflakkee werd zwaar getroffen door de Watersnoodramp. Meer dan 20 slachtoffers vielen hier.'
 aantal_slachtoffers: 25
-coördinaten: "51.8333, 4.0167"
+coördinaten: 51.8333, 4.0167
 kaart: '/images/plaatsen/nieuwkerk-map.jpg'
 ---
 

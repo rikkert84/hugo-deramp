@@ -1,20 +1,6 @@
 {{ define "main" }}
 <h1>Plaatsen ({{ len .Pages }})</h1>
 
-<div class="plaatsen-grid">
-{{ range .Pages }}
-  <div class="plaats-card">
-    <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
-    {{ if .Params.aantal_slachtoffers }}
-      <span class="badge">{{ .Params.aantal_slachtoffers }} slachtoffers</span>
-    {{ end }}
-    {{ if .Params.coördinaten }}
-      <button onclick="zoomTo({{ .Params.coördinaten }})">Zoom kaart</button>
-    {{ end }}
-  </div>
-{{ end }}
-</div>
-
 <div id="zeeland-map" style="height: 600px;"></div>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>

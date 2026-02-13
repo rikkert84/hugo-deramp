@@ -1,8 +1,3 @@
-layouts/plaatsen/taxonomy.html voor detailpagina van één plaats (bijv. /plaatsen/nieuwkerk/).
-​
-
-Volledige layouts/plaatsen/taxonomy.html
-xml
 {{ define "main" }}
 <article class="plaats-detail">
   <header class="plaats-header">
@@ -53,15 +48,40 @@ xml
   </div>
 </article>
 
-{{/* Kaart voor deze plaats */}}
+{{/* Mini-kaart */}}
 {{ if .Params.coördinaten }}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{{ $coords := .Params.coördinaten | split "," }}
+{{ $lat := ($coords | index 0 | strings.TrimSpace | float) }}
+{{ $lng := ($coords | index 1 | strings.TrimSpace | float) }}
+
+{{ if and (not (eq $lat 0)) (not (eq $lng 0)) }}
+<div id="plaats-map" style="height: 400px; margin: 1.5rem 0; border: 1px solid #ccc;"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
 <script>
-const [lat, lng] = "{{ .Params.coördinaten }}".split(',').map(n => parseFloat(n.trim()));
-const map = L.map('plaats-map').setView([lat, lng], 14);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-L.marker([lat, lng]).bindPopup('{{ .Title }}').addTo(map);
+document.addEventListener('DOMContentLoaded', function() {
+  const map = L.map('plaats-map').setView([{{ $lat }}, {{ $lng }}], 14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap'
+  }).addTo(map);
+  
+  L.marker([{{ $lat }}, {{ $lng }}])
+    .bindPopup('<strong>{{ .Title }}</strong><br>Klik voor details')
+    .addTo(map);
+  
+  console.log('Kaart geladen:', {{ $lat }}, {{ $lng }});
+});
 </script>
+{{ else }}
+<p style="color: orange; padding: 1rem; background: #fff3cd;">
+  <strong>Kaart niet beschikbaar</strong><br>
+  Coördinaten: "{{ .Params.coördinaten }}" (fix formaat: "51.8333, 4.0167")
+</p>
+{{ end }}
+{{ end }}
+
+
 {{ end }}
 {{ end }}

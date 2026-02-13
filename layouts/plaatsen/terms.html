@@ -1,26 +1,9 @@
 {{ define "main" }}
-<h1>ALLE PLAATSEN DEBUG</h1>
-
-<!-- Basis debug -->
-<p>Section: {{ .Section }}</p>
-<p>Pages: {{ len .Pages }}</p>
-{{ if .Data }}
-  <p>Data.Terms: {{ len .Data.Terms }}</p>
-  <p>Data.Singular: {{ .Data.Singular }}</p>
-{{ else }}
-  <p style="color:red;">❌ .Data NIL - GEEN TAXONOMIE!</p>
-{{ end }}
-
-<!-- ALLE site taxonomies -->
-<h3>Site Taxonomies Debug</h3>
+<h1>TEST: {{ .Title }}</h1>
+<p>Aantal termen: {{ len .Data.Terms }}</p>
 <ul>
-{{ range $tax, $terms := .Site.Taxonomies }}
-  <li><strong>{{ $tax }}</strong>: {{ len $terms }} termen</li>
+{{ range .Data.Terms }}
+  <li>{{ .Page.Title }} ({{ .Count }})</li>
 {{ end }}
 </ul>
-
-<!-- Explodeer data -->
-<pre>{{ printf "%#v" .Data | safeHTML }}</pre>
-
-<div id="map" style="height:400px;background:red;color:white;">TEST ROOD</div>
 {{ end }}

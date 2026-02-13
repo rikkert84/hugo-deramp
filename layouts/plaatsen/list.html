@@ -20,16 +20,33 @@
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <script>
 const map = L.map('zeeland-map').setView([51.5, 3.8], 10);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-// Hardcoded markers (tot data werkt)
-L.marker([51.8333, 4.0167]).bindPopup('Nieuwkerk').addTo(map);
-L.marker([51.6500, 3.8456]).bindPopup('Zierikzee').addTo(map);
+// DYNAMISCHE MARKERS uit content/plaatsen/
+{{ range .Pages }}
+  {{ $coords := .Params.coördinaten | split "," }}
+  {{ if $coords }}
+    {{ $lat := ($coords | index 0 | strings.TrimSpace | float) }}
+    {{ $lng := ($coords | index 1 | strings.TrimSpace | float) }}
+    {{ if and (ge $lat 50) (le $lat 54) }}  <!-- Veilige range NL -->
+      L.marker([{{ $lat }}, {{ $lng }}])
+        .bindPopup(`
+          <h4><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
+          <p>{{ .Params.aantal_slachtoffers | default "?" }} slachtoffers</p>
+        `)
+        .addTo(map);
+    {{ end }}
+  {{ end }}
+{{ end }}
 
-function zoomTo(lat, lng) {
-  map.setView([lat, lng], 14);
-}
+console.log('Markers toegevoegd: {{ len .Pages }} plaatsen');
 </script>
+
+
+
+
+
 {{ end }}

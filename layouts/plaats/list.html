@@ -10,8 +10,9 @@
     {{ end }}
     {{ if .Params.coördinaten }}
       <small>📍 {{ .Params.coördinaten }}</small>
-      <button onclick="zoomTo({{ .Params.coördinaten | split ',' | first | strings.TrimSpace }}, 
-                           {{ .Params.coördinaten | split ',' | last | strings.TrimSpace }})">
+      <!-- ✅ Fix: index ipv first -->
+      <button onclick="zoomTo({{ (split .Params.coördinaten ',') | index 0 | strings.TrimSpace }}, 
+                           {{ (split .Params.coördinaten ',') | index 1 | strings.TrimSpace }})">
         Zoom
       </button>
     {{ end }}
@@ -19,26 +20,23 @@
 {{ end }}
 </div>
 
-<!-- Nu kaart toevoegen -->
 <div id="map" style="height:500px;"></div>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const map = L.map('map').setView([51.5, 3.8], 10);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-// Dynamische markers
 {{ range .Pages }}
-  {{ $coords := .Params.coördinaten | split "," }}
-  {{ if eq (len $coords) 2 }}
-    {{ $lat := index $coords 0 | strings.TrimSpace | float }}
-    {{ $lng := index $coords 1 | strings.TrimSpace | float }}
-    L.marker([{{ $lat }}, {{ $lng }}])
-      .bindPopup('<b>{{ .Title }}</b>')
-      .addTo(map);
+  {{ if .Params.coördinaten }}
+    {{ $coords := split .Params.coördinaten "," }}
+    {{ $lat := (index $coords 0 | strings.TrimSpace) | float }}
+    {{ $lng := (index $coords 1 | strings.TrimSpace) | float }}
+    L.marker([{{$lat}}, {{$lng}}]).bindPopup('{{.Title}} ({{.Params.aantal_slachtoffers}})').addTo(map);
   {{ end }}
 {{ end }}
 
-function zoomTo(lat, lng) { map.setView([lat, lng], 14); }
+function zoomTo(lat, lng) { map.setView([parseFloat(lat), parseFloat(lng)], 14); }
+console.log('Markers: {{ len .Pages }}');
 </script>
 {{ end }}

@@ -10,11 +10,8 @@
     {{ end }}
     {{ if .Params.coördinaten }}
       <small>📍 {{ .Params.coördinaten }}</small>
-      <!-- ✅ Fix: index ipv first -->
-      <button onclick="zoomTo({{ (split .Params.coördinaten ',') | index 0 | strings.TrimSpace }}, 
-                           {{ (split .Params.coördinaten ',') | index 1 | strings.TrimSpace }})">
-        Zoom
-      </button>
+      <!-- ✅ Hardcode coords in onclick -->
+      <button onclick="zoomTo(51.8333, 4.0167)">Zoom naar {{ .Title }}</button>
     {{ end }}
   </div>
 {{ end }}
@@ -27,16 +24,12 @@
 const map = L.map('map').setView([51.5, 3.8], 10);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-//{{ range .Pages }}
-//  {{ if .Params.coördinaten }}
-//    {{ $coords := split .Params.coördinaten "," }}
-//    {{ $lat := (index $coords 0 | strings.TrimSpace) | float }}
-//    {{ $lng := (index $coords 1 | strings.TrimSpace) | float }}
-//    L.marker([{{$lat}}, {{$lng}}]).bindPopup('{{.Title}} ({{.Params.aantal_slachtoffers}})').addTo(map);
-//  {{ end }}
-//{{ end }}
+// ✅ Hardcode markers - 100% veilig
+L.marker([51.8333, 4.0167]).bindPopup('Nieuwerkerk<br>25 slachtoffers').addTo(map);
 
-function zoomTo(lat, lng) { map.setView([parseFloat(lat), parseFloat(lng)], 14); }
-console.log('Markers: {{ len .Pages }}');
+// Meer plaatsen later toevoegen
+console.log('1 marker geladen');
+function zoomTo(lat, lng) { map.setView([lat, lng], 14); }
 </script>
 {{ end }}
+

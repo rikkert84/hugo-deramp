@@ -6,7 +6,7 @@ geboortedatum: '1919-12-19'
 overlijdensplaats: 'Nieuwerkerk'
 overlijdensdatum: '1953-02-01'
 plaatsnaam:
-  - nieuwkerk
+  - nieuwerkerk
 leeftijd: 2  # Berekend: 1953-1950
 herinneringen: 
   - 'aalbregtse-jacoba-cobie'

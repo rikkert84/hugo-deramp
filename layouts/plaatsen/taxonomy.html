@@ -1,63 +1,16 @@
 {{ define "main" }}
-<article class="plaats-detail">
-  <header class="plaats-header">
-    <h1>{{ .Title }}</h1>
-    {{ if .Description }}
-      <p class="plaats-summary">{{ .Description }}</p>
-    {{ end }}
-  </header>
+<h1>DEBUG TAXONOMIE</h1>
+<p>Is taxonomy: {{ .IsHome }} {{ .IsSection }} {{ .IsTaxonomy }}</p>
+<p>Section: {{ .Section }}</p>
+<p>Data.Terms: {{ len .Data.Terms }}</p>
+<p>Pages: {{ len .Pages }}</p>
+<p>RegularPages: {{ len .RegularPages }}</p>
 
-  <!-- Plaats info -->
-  <div class="plaats-info">
-    {{ if .Params.coördinaten }}
-      <div id="plaats-map" style="height: 400px; margin: 1.5rem 0;"></div>
-    {{ end }}
-    
-    {{ if .Params.aantal_slachtoffers }}
-      <p class="slachtoffers-count">
-        <strong>{{ .Params.aantal_slachtoffers }}</strong> slachtoffers
-      </p>
-    {{ end }}
-  </div>
+{{/* ALLE termen forceren */}}
+{{ range site.Taxonomies.plaatsen }}
+  <p>Term: {{ .Name }} ({{ len .Pages }})</p>
+{{ end }}
 
-  <!-- Beschrijving -->
-  {{ if .Content }}
-    <div class="plaats-content">
-      {{ .Content }}
-    </div>
-  {{ end }}
-
-  <!-- Slachtoffers uit deze plaats -->
-  <section class="slachtoffers-section">
-    <h2>Slachtoffers ({{ len .Data.Pages }})</h2>
-    <div class="namen-grid">  <!-- Hergebruik advertentie-stijl! -->
-      {{ range .Data.Pages.ByParam "sorteren" }}
-        <div class="overlijdens-advertentie">
-          <div class="advertentie-inner">
-            <h3 class="naam"><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
-            <div class="geb">{{ .Params.geboortedatum | time.AsTime | time.Format "2 Jan 2006" }} te {{ .Params.geboorteplaats }}</div>
-            <div class="overl">Overleden te {{ .Params.overlijdensplaats }}</div>
-          </div>
-        </div>
-      {{ end }}
-    </div>
-  </section>
-
-  <div class="plaats-nav">
-    <a href="/plaatsen/" class="btn">← Alle plaatsen</a>
-  </div>
-</article>
-
-
-{{/* DEBUG KAART */}}
-<div style="height: 400px; background: red; color: white; text-align: center; line-height: 400px;">
-  TEST: {{ .Params.coördinaten }}<br>
-  Lat: {{ .Params.coördinaten | split "," | first | strings.TrimSpace }}<br>
-  Aantal pages: {{ len .Data.Pages }}
-</div>
-
-
-
-
-
-
+<div id="map" style="height:400px;"></div>
+<script>console.log('Taxonomies:', {{ jsonify (site.Taxonomies.plaatsen | first ) }});</script>
+{{ end }}

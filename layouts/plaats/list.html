@@ -30,6 +30,25 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
   maxZoom: 18
 }).addTo(map);
 
+//demo
+
+// Direct in template (geen fetch)
+L.polygon([
+  [51.82, 4.00], [51.84, 4.00], [51.84, 4.03], 
+  [51.82, 4.03], [51.82, 4.00]
+], {
+  color: '#2980b9',
+  fillColor: '#3498db',
+  fillOpacity: 0.3,
+  weight: 2
+}).bindPopup('Nieuwkerk gebied<br>245 slachtoffers')
+.addTo(map);
+
+//einde demo
+
+
+
+  
 // Sober marker icon
 const soberIcon = L.divIcon({
   html: '<div style="background:#333; width:8px; height:8px; border-radius:50%; border:1px solid #666;"></div>',

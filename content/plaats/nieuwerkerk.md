@@ -1,5 +1,5 @@
 ---
 title: "Nieuwerkerk"
-coördinaten: "51.8333 4.0167"  # ← SPAITE ipv komma!
-aantal_slachtoffers: 25
+coördinaten: "51.65 4.00"
+aantal_slachtoffers: 245
 ---

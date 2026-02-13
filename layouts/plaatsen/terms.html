@@ -1,16 +1,26 @@
 {{ define "main" }}
-<h1>DEBUG TAXONOMIE</h1>
-<p>Is taxonomy: {{ .IsHome }} {{ .IsSection }} {{ .IsTaxonomy }}</p>
-<p>Section: {{ .Section }}</p>
-<p>Data.Terms: {{ len .Data.Terms }}</p>
-<p>Pages: {{ len .Pages }}</p>
-<p>RegularPages: {{ len .RegularPages }}</p>
+<h1>ALLE PLAATSEN DEBUG</h1>
 
-{{/* ALLE termen forceren */}}
-{{ range site.Taxonomies.plaatsen }}
-  <p>Term: {{ .Name }} ({{ len .Pages }})</p>
+<!-- Basis debug -->
+<p>Section: {{ .Section }}</p>
+<p>Pages: {{ len .Pages }}</p>
+{{ if .Data }}
+  <p>Data.Terms: {{ len .Data.Terms }}</p>
+  <p>Data.Singular: {{ .Data.Singular }}</p>
+{{ else }}
+  <p style="color:red;">❌ .Data NIL - GEEN TAXONOMIE!</p>
 {{ end }}
 
-<div id="map" style="height:400px;"></div>
-<script>console.log('Taxonomies:', {{ jsonify (site.Taxonomies.plaatsen | first ) }});</script>
+<!-- ALLE site taxonomies -->
+<h3>Site Taxonomies Debug</h3>
+<ul>
+{{ range $tax, $terms := .Site.Taxonomies }}
+  <li><strong>{{ $tax }}</strong>: {{ len $terms }} termen</li>
+{{ end }}
+</ul>
+
+<!-- Explodeer data -->
+<pre>{{ printf "%#v" .Data | safeHTML }}</pre>
+
+<div id="map" style="height:400px;background:red;color:white;">TEST ROOD</div>
 {{ end }}

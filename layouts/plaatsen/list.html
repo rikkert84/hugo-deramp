@@ -1,46 +1,7 @@
 {{ define "main" }}
-<h1>Plaatsen ({{ len .Pages }})</h1>
-
-<div class="plaatsen-grid">
-{{ range .Pages }}
-  <div class="plaats-card">
-    <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
-    {{ if .Params.aantal_slachtoffers }}
-      <span class="badge">{{ .Params.aantal_slachtoffers }} slachtoffers</span>
-    {{ end }}
-    {{ if .Params.coördinaten }}
-      <button onclick="zoomTo({{ .Params.coördinaten | split ',' | first | strings.TrimSpace }}, 
-                           {{ .Params.coördinaten | split ',' | last | strings.TrimSpace }})">
-        Zoom kaart
-      </button>
-    {{ end }}
-  </div>
-{{ end }}
-</div>
-
-<!-- Kaart onderaan -->
-<div id="map" style="height: 500px;"></div>
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-const map = L.map('map').setView([51.5, 3.8], 10);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-// TEST MARKER - werkt altijd
-L.marker([51.8333, 4.0167]).bindPopup('Nieuwerkerk TEST').addTo(map);
-
-{{ range .Pages }}
-  {{ $coords := .Params.coördinaten | split "," }}
-  {{ if eq (len $coords) 2 }}
-    {{ $lat := ($coords | index 0 | strings.TrimSpace | float) }}
-    {{ $lng := ($coords | index 1 | strings.TrimSpace | float) }}
-    console.log('Marker: {{ .Title }}', {{ $lat }}, {{ $lng }});
-    L.marker([{{ $lat }}, {{ $lng }}]).bindPopup('{{ .Title }}').addTo(map);
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
+  {{ range .Pages }}
+    <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
   {{ end }}
-{{ end }}
-
-function zoomTo(lat, lng) { map.setView([lat, lng], 14); }
-console.log('Totaal markers: {{ len .Pages }}');
-</script>
 {{ end }}

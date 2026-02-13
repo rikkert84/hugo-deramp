@@ -9,27 +9,45 @@
       <span class="badge">{{ .Params.aantal_slachtoffers }} slachtoffers</span>
     {{ end }}
     {{ if .Params.coördinaten }}
-      <small>📍 {{ .Params.coördinaten }}</small>
-      <!-- ✅ Hardcode coords in onclick -->
-      <button onclick="zoomTo(51.8333, 4.0167)">Zoom naar {{ .Title }}</button>
+      <button onclick="zoomTo({{ .Params.coördinaten }})">Zoom kaart</button>
     {{ end }}
   </div>
 {{ end }}
 </div>
 
-<div id="map" style="height:500px;"></div>
+<div id="zeeland-map" style="height: 600px;"></div>
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <script>
-const map = L.map('map').setView([51.5, 3.8], 10);
+const map = L.map('zeeland-map').setView([51.5, 3.8], 10);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-// ✅ Hardcode markers - 100% veilig
-L.marker([51.8333, 4.0167]).bindPopup('Nieuwerkerk<br>25 slachtoffers').addTo(map);
-
-// Meer plaatsen later toevoegen
-console.log('1 marker geladen');
-function zoomTo(lat, lng) { map.setView([lat, lng], 14); }
-</script>
+// DYNAMISCHE MARKERS - originele safe versie
+{{ range .Pages }}
+  {{ $coords := .Params.coördinaten }}
+  {{ if $coords }}
+    {{ $parts := split $coords " " }}  <!-- Spatie ipv komma! -->
+    {{ if ge (len $parts) 2 }}
+      {{ $lat := (index $parts 0 | strings.TrimSpace | float) }}
+      {{ $lng := (index $parts 1 | strings.TrimSpace | float) }}
+      {{ if and (ge $lat 50) (le $lat 54) }}
+        L.marker([{{$lat}}, {{$lng}}])
+          .bindPopup(`
+            <h4><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
+            <p>{{ .Params.aantal_slachtoffers | default "?" }} slachtoffers</p>
+          `)
+          .addTo(map);
+      {{ end }}
+    {{ end }}
+  {{ end }}
 {{ end }}
 
+console.log('Markers toegevoegd: {{ len .Pages }} plaatsen');
+function zoomTo(coords) {
+  const [lat, lng] = coords.split(',').map(s => parseFloat(s.trim()));
+  map.setView([lat, lng], 14);
+}
+</script>
+{{ end }}

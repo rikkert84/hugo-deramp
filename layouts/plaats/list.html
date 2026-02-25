@@ -1,18 +1,24 @@
 {{ define "main" }}
-<h1>Plaatsen ({{ len .Pages }})</h1>
+<h1>Getroffen plaatsen</h1>
 
 <!-- Interactieve Zeeland kaart -->
 <div id="zeeland-map" style="height: 600px; margin-bottom: 2rem;"></div>
 
 <div class="plaatsen-grid">
 {{ range .Pages }}
-  <div class="plaats-card">
-    <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+  <div>
+    <h3><a href="{{ .Permalink }}">{{ .Title }}</a>    
+    {{ if .Params.coördinaten }}
+      <button onclick="zoomTo('{{ .Params.coördinaten }}')">🔍</button>
+    {{ end }}
+    </h3>
+
+    {{ if .Params.provincie }}
+      <p><strong>Provincie:</strong> {{ .Params.provincie }}</p>
+    {{ end }}
+
     {{ if .Params.aantal_slachtoffers }}
       <span class="badge">{{ .Params.aantal_slachtoffers }} slachtoffers</span>
-    {{ end }}
-    {{ if .Params.coördinaten }}
-      <button onclick="zoomTo('{{ .Params.coördinaten }}')">Zoom kaart</button>
     {{ end }}
   </div>
 {{ end }}
@@ -30,7 +36,7 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
   maxZoom: 18
 }).addTo(map);
 
-// OVEREENKOMSTIGE KNOP HIER (direct na tileLayer)
+// Zoom uitknop
 const overviewBtn = L.Control.extend({
   onAdd: function(map) {
     const btn = L.DomUtil.create('div', 'leaflet-bar leaflet-control overview-btn');
@@ -48,38 +54,25 @@ const overviewBtn = L.Control.extend({
 new overviewBtn({ position: 'topleft' }).addTo(map);
 
  
-//demo
-
 // Overstromingsgebieden - dunnere rand
-L.polygon([
-  // rest tekenen met https://geojson.io/
-  [51.4899, 3.5896], [51.4814, 3.5971], [51.4763, 3.6096],
-  [51.4697, 3.6364], [51.4693, 3.6657], [51.4779, 3.7007],
-  [51.4849, 3.7400], [51.4860, 3.7768], [51.5000, 3.8143],
-  [51.5144, 3.8549], [51.5373, 3.8530], [51.5478, 3.8368],
-  [51.5455, 3.8130], [51.5439, 3.7918], [51.5493, 3.7612],
-  [51.5439, 3.7406], [51.5260, 3.7288], [51.5140, 3.7032],
-  [51.5253, 3.6851], [51.5474, 3.6776], [51.5555, 3.6564],
-  [51.5493, 3.6333], [51.5183, 3.5896], [51.4899, 3.5896]
-  
-], {
-  color: '#4a90e2',        // ← Helderblauw ipv donker
-  weight: 1.5,             // ← 1.5px ipv 3px
-  fillColor: '#4a90e2',
-  fillOpacity: 0.25,
-  opacity: 0.9             // ← Rand transparant
-}).bindPopup('<b>Nieuwerkerk gebied</b><br>245 slachtoffers').addTo(map);
-
-L.polygon([
-  [51.70, 4.10], [51.72, 4.10], [51.72, 4.20], [51.70, 4.20], [51.70, 4.10]
-], {
-  color: '#4a90e2',
-  weight: 1.5,
-  fillColor: '#4a90e2',
-  fillOpacity: 0.25,
-  opacity: 0.9
-}).bindPopup('Tweede rampgebied').addTo(map);
-
+//L.polygon([
+//  // rest tekenen met https://geojson.io/
+//  [51.4899, 3.5896], [51.4814, 3.5971], [51.4763, 3.6096],
+//  [51.4697, 3.6364], [51.4693, 3.6657], [51.4779, 3.7007],
+//  [51.4849, 3.7400], [51.4860, 3.7768], [51.5000, 3.8143],
+//  [51.5144, 3.8549], [51.5373, 3.8530], [51.5478, 3.8368],
+//  [51.5455, 3.8130], [51.5439, 3.7918], [51.5493, 3.7612],
+//  [51.5439, 3.7406], [51.5260, 3.7288], [51.5140, 3.7032],
+//  [51.5253, 3.6851], [51.5474, 3.6776], [51.5555, 3.6564],
+//  [51.5493, 3.6333], [51.5183, 3.5896], [51.4899, 3.5896]
+//  
+//], {
+//  color: '#4a90e2',        // ← Helderblauw ipv donker
+//  weight: 1.5,             // ← 1.5px ipv 3px
+//  fillColor: '#4a90e2',
+//  fillOpacity: 0.25,
+//  opacity: 0.9             // ← Rand transparant
+//}).bindPopup('<b>Nieuwerkerk gebied</b><br>245 slachtoffers').addTo(map);
 //einde demo
 
 
@@ -106,7 +99,7 @@ const soberIcon = L.divIcon({
         L.marker([{{$lat}}, {{$lng}}], { icon: soberIcon })
           .bindPopup(`
             <h4><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
-            <p>{{ .Params.aantal_slachtoffers | default "?" }} slachtoffers</p>
+            <p>{{ .Params.aantal_slachtoffers | default "Geen" }} slachtoffers</p>
           `)
           .addTo(map);
       {{ end }}

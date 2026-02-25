@@ -1,0 +1,23 @@
+{{ if or .Paginator.HasPrev .Paginator.HasNext }}
+<div class="pagination-wrapper">
+<nav class="pagination" role="navigation" aria-label="Pagination Navigation">
+  {{ with .Paginator.Prev }}
+    <a href="{{ .URL | relURL }}" class="pagination-link pagination-link--prev" rel="prev" title="Previous Page">&larr; Vorige</a>
+  {{ end }}
+  
+  <span class="pagination-label">Pagina {{ .Paginator.PageNumber }} van {{ .Paginator.TotalPages }}</span>
+  
+  {{ range .Paginator.Pagers }}
+    {{ if eq . .Paginator }}
+      <span class="pagination-link pagination-link--current" aria-current="page">{{ .PageNumber }}</span>
+    {{ else }}
+      <a href="{{ .URL | relURL }}" class="pagination-link" rel="page {{ .PageNumber }}">{{ .PageNumber }}</a>
+    {{ end }}
+  {{ end }}
+  
+  {{ with .Paginator.Next }}
+    <a href="{{ .URL | relURL }}" class="pagination-link pagination-link--next" rel="next" title="Next Page">Volgende &rarr;</a>
+  {{ end }}
+</nav>
+</div>
+{{ end }}

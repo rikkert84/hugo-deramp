@@ -1,5 +1,6 @@
 ---
 title: 'Heijningen'
-coördinaten: "51.655833 4.41"
-aantal_slachtoffers: 25
+coördinaten: "51.6565557 4.4100072"
+provincie: "Noord-Brabant"
+aantal_slachtoffers: 78
 ---

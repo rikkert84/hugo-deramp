@@ -7,6 +7,8 @@ overlijdensplaats: 'Nieuwerkerk'
 overlijdensdatum: '1953-02-01'
 plaatsnaam:  # ← ZEKER singular!
   - nieuwerkerk
+plaatsen:
+  - nieuwerkerk
 leeftijd: 2  # Berekend: 1953-1950
 herinneringen: 
   - 'aalbregtse-jacoba-cobie'

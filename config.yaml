@@ -2,8 +2,7 @@
 baseURL: 'https://helpful-vacherin-6b17cd.netlify.app/'
 languageCode: 'nl-NL'
 title: 'Namen Watersnoodramp 1953'
-pagination.pagerSize: 10
-
+pagination.pagerSize: 2
 theme: ['PaperMod']
 
 taxonomies:
@@ -40,9 +39,9 @@ menu:
     name: Namen
     url: /namen/
     weight: 1
-  - identifier: plaatsen
+  - identifier: plaats
     name: Plaatsen
-    url: /plaatsen/
+    url: /plaats/
     weight: 2
   - identifier: herinneringen
     name: Herinneringen

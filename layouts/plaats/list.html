@@ -1,27 +1,20 @@
 {{ define "main" }}
 <h1>Getroffen plaatsen</h1>
+</br>
 
 <!-- Interactieve Zeeland kaart -->
 <div id="zeeland-map" style="height: 600px; margin-bottom: 2rem;"></div>
 
-<div class="plaatsen-grid">
-{{ range .Pages }}
-  <div>
-    <h3><a href="{{ .Permalink }}">{{ .Title }}</a>    
-    {{ if .Params.coördinaten }}
-      <button onclick="zoomTo('{{ .Params.coördinaten }}')">🔍</button>
-    {{ end }}
-    </h3>
-
-    {{ if .Params.provincie }}
-      <p><strong>Provincie:</strong> {{ .Params.provincie }}</p>
-    {{ end }}
-
-    {{ if .Params.aantal_slachtoffers }}
-      <span class="badge">{{ .Params.aantal_slachtoffers }} slachtoffers</span>
-    {{ end }}
-  </div>
-{{ end }}
+<div class="plaatsen-lijst">
+  {{ range .Pages.GroupByParam "provincie" "asc" }}
+    <h3>{{ .Key }}</h3>
+    <p>
+      {{ range $index, $page := sort .Pages "LinkTitle" "asc" }}
+        {{ if $index }} | {{ end }}
+        <a href="{{ $page.Permalink }}">{{ $page.Title }}</a>
+      {{ end }}
+    </p> </br>
+  {{ end }}
 </div>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -99,7 +92,13 @@ const soberIcon = L.divIcon({
         L.marker([{{$lat}}, {{$lng}}], { icon: soberIcon })
           .bindPopup(`
             <h4><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
-            <p>{{ .Params.aantal_slachtoffers | default "Geen" }} slachtoffers</p>
+            <p>
+            {{ $aantal := .Params.aantal_slachtoffers | default 0 }}
+            {{ if eq $aantal 0 }}Geen slachtoffers
+            {{ else if eq $aantal 1 }}Eén slachtoffer
+            {{ else }}{{ $aantal }} slachtoffers
+            {{ end }}
+            </p>
           `)
           .addTo(map);
       {{ end }}
@@ -107,7 +106,7 @@ const soberIcon = L.divIcon({
   {{ end }}
 {{ end }}
 
-console.log('Markers toegevoegd: {{ len .Pages }} plaatsen');
+//console.log('Markers toegevoegd: {{ len .Pages }} plaatsen');
 
 function zoomTo(coordsStr) {
   const parts = coordsStr.split(' ');

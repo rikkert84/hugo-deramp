@@ -1,117 +1,161 @@
 {{ define "main" }}
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ .Title }} - Watersnood Slachtoffers</title>
+</head>
+<body>
 <div class="plaats-detail">
-  <!-- Header met kaart -->
+
+  <!-- Titel en intro -->
   <header style="margin-bottom: 2rem;">
     <h1>{{ .Title }}</h1>
-    {{ if .Params.aantal_slachtoffers }}
-      <div style="background: #e74c3c; color: white; display: inline-block; padding: 0.5rem 1rem; border-radius: 999px; font-weight: bold;">
-        {{ .Params.aantal_slachtoffers }} slachtoffers
-      </div>
-    {{ end }}
     
-    <!-- Mini-kaart van deze plaats -->
-    <div id="plaats-map" style="height: 300px; margin: 1rem 0; border-radius: 8px;"></div>
+    {{ $aantal := .Params.aantal_slachtoffers | default 0 }}
+    <p>
+      Als gevolg van de watersnood 
+      {{ if eq $aantal 1 }}is
+      {{ else }}zijn 
+      {{ end }} 
+      in {{ .Title }} (provincie {{ .Params.provincie }}) 
+      {{ if eq $aantal 0 }}geen personen overleden.
+      {{ else if eq $aantal 1 }}één persoon overleden.
+      {{ else }}{{ $aantal }} personen overleden.
+      {{ end }}
+    </p>
   </header>
 
-  <!-- Namenlijst -->
-  <section class="slachtoffers">
-    <h2>Slachtoffers uit {{ .Title }}</h2>
-    
-    <!-- Filter -->
-    <div style="margin: 1.5rem 0;">
-      <input type="text" id="plaats-search" placeholder="🔍 Zoek in namen..." 
-             style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px; width: 300px;">
-    </div>
+  <!-- Mini-kaart -->
 
-    <div class="namen-grid">
-      {{ $namen := where .Site.Pages "Params.overlijdensplaats" .Title }}
-      {{ range $namen.ByParam "sorteren" }}
-        <div class="naam-card" 
-             data-naam="{{ .Title | lower }}"
-             style="padding: 1rem; border: 1px solid #eee; border-radius: 8px; margin-bottom: 1rem;">
-          <h4 style="margin: 0 0 0.25rem 0; color: #2c3e50;">{{ .Title }}</h4>
-          
-          {{ if .Params.geboortedatum }}
-            <div style="font-size: 0.9rem; color: #7f8c8d;">
-              <strong>Geb.</strong> {{ .Params.geboortedatum | time.AsTime | time.Format "2 Jan 1950" }}
-              {{ if .Params.geboorteplaats }} • {{ .Params.geboorteplaats }}{{ end }}
-            </div>
-          {{ end }}
-          
-          {{ if .Params.leeftijd }}
-            <div style="font-size: 0.9rem; color: #e74c3c; font-weight: 500;">
-              Leeftijd: {{ .Params.leeftijd }}
-            </div>
-          {{ end }}
-          
-          <a href="{{ .Permalink }}" style="display: inline-block; margin-top: 0.5rem; color: #3498db;">Volledige details →</a>
-        </div>
-      {{ end }}
-    </div>
+<div id="zeeland-map" style="height: 600px; margin-bottom: 2rem;"></div>
 
-    <!-- Counter -->
-    <p id="namen-count" style="text-align: center; color: #7f8c8d; margin-top: 1rem;">
-      <em>{{ len $namen }} namen gevonden</em>
-    </p>
-  </section>
-</div>
 
-<!-- Leaflet voor mini-kaart -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-const map = L.map('plaats-map').setView([{{ .Params.coördinaten }}], 14);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png').addTo(map);
+const map = L.map('zeeland-map').setView([51.65, 4.05], 9);
 
-// Marker voor deze plaats
-L.marker([{{ .Params.coördinaten }}]).bindPopup('<b>{{ .Title }}</b>').addTo(map);
+// Positron (sober wit/grijs)
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  maxZoom: 18
+}).addTo(map);
 
-// Filter functionaliteit
-const searchInput = document.getElementById('plaats-search');
-const items = document.querySelectorAll('.naam-card');
-let totalNamen = {{ len $namen }};
-
-searchInput.addEventListener('input', function() {
-  const q = this.value.toLowerCase().trim();
-  let visible = 0;
-  
-  items.forEach(item => {
-    const naam = item.dataset.naam || '';
-    if (q && !naam.includes(q)) {
-      item.style.display = 'none';
-    } else {
-      item.style.display = '';
-      visible++;
-    }
-  });
-  
-  document.getElementById('namen-count').textContent = 
-    `Gevonden: ${visible} van ${totalNamen} namen`;
+const soberIcon = L.divIcon({
+  html: '<div style="background:#333; width:8px; height:8px; border-radius:50%; border:1px solid #666;"></div>',
+  iconSize: [10, 10],
+  iconAnchor: [5, 5],
+  popupAnchor: [0, -10],
+  className: 'custom-marker'
 });
+
+
+// Dynamische markers
+{{ $coords := .Params.coördinaten }}
+  {{ if $coords }}
+    {{ $parts := split $coords " " }}
+    {{ if ge (len $parts) 2 }}
+      {{ $lat := (index $parts 0 | strings.TrimSpace | float) }}
+      {{ $lng := (index $parts 1 | strings.TrimSpace | float) }}
+      {{ if and (ge $lat 50) (le $lat 54) }}
+        L.marker([{{$lat}}, {{$lng}}], { icon: soberIcon })
+          .addTo(map).bindPopup({{ .Title }});
+      {{ end }}
+  {{ end }}
+{{ end }}
+
 </script>
 
-<style>
-.plaats-detail {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-.namen-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
-}
-.naam-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transform: translateY(-1px);
-  transition: all 0.2s;
-}
-@media (max-width: 768px) {
-  .namen-grid {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
 
+  
+
+
+  <!-- Slachtoffers lijst -->
+  <section class="slachtoffers">
+    <h2>Slachtoffers uit {{ .Title }}</h2>
+    
+    <!-- Zoekbalk -->
+    <div style="margin: 1.5rem 0;">
+      <input type="text" id="plaats-search" placeholder="🔍 Zoek in namen..." 
+             style="padding: 0.75rem 1rem; border: 1px solid #ddd; border-radius: 6px; width: 100%; max-width: 400px; font-size: 1rem;">
+    </div>
+
+    <!-- Namen grid -->
+    {{ $namen := where .Site.Pages "Params.overlijdensplaats" .Title }}
+    {{ if $namen }}
+      <div class="namen-grid">
+        {{ range $namen.ByParam "sorteren" }}
+          <div class="naam-card" data-naam="{{ .Title | lower | urlize }}">
+          <a href="{{ .Permalink }}"><h4 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;">{{ .Title }}{{ if .Params.Herinneringen }} &#128173; {{ end }}</h4></a>
+            
+            {{ if .Params.geboortedatum }}
+              <div style="font-size: 0.9rem; margin-bottom: 0.25rem;">
+                Geboren {{ .Params.geboortedatum | time.AsTime | time.Format "2 Jan 2006" }}
+                {{ if .Params.geboorteplaats }} te {{ .Params.geboorteplaats }}{{ end }}
+              </div>
+            {{ end }}
+
+          </div>
+        {{ end }}
+      </div>
+
+      <!-- Counter -->
+      <p id="namen-count" style="text-align: center; color: #7f8c8d; margin-top: 2rem; font-style: italic;">
+        <em>{{ len $namen }} namen gevonden</em>
+      </p>
+    {{ else }}
+      <p style="text-align: center; color: #7f8c8d; font-style: italic; margin-top: 2rem;">
+        Geen gedocumenteerde slachtoffers bekend uit {{ .Title }}.
+      </p>
+    {{ end }}
+  </section>
+</div>
+
+<!-- Leaflet CSS/JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- JavaScript -->
+<script>
+
+  // === ZOEKFUNCTIE ===
+  const searchInput = document.getElementById('plaats-search');
+  const items = document.querySelectorAll('.naam-card');
+  const totalNamen = {{ len $namen }};
+  const counter = document.getElementById('namen-count');
+
+  if (searchInput && items.length > 0) {
+    searchInput.addEventListener('input', function() {
+      const query = this.value.toLowerCase().trim();
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const naam = item.dataset.naam || '';
+        if (query && !naam.includes(query)) {
+          item.style.display = 'none';
+        } else {
+          item.style.display = '';
+          visibleCount++;
+        }
+      });
+
+      if (counter) {
+        counter.textContent = `Gevonden: ${visibleCount} van ${totalNamen} namen`;
+      }
+    });
+  }
+
+</script>
+
+
+<style>
+.plaats-detail { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+.plaats-map { height: 280px; width: 100%; border-radius: 12px; margin: 1rem 0 2rem; }
+.namen-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem; }
+.naam-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-1px); transition: all 0.2s; }
+@media (max-width: 768px) { .namen-grid { grid-template-columns: 1fr; } }
+</style>
 {{ end }}

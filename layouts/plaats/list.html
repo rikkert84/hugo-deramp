@@ -46,27 +46,26 @@ const overviewBtn = L.Control.extend({
 });
 new overviewBtn({ position: 'topleft' }).addTo(map);
 
- 
-// Overstromingsgebieden - dunnere rand
-//L.polygon([
-//  // rest tekenen met https://geojson.io/
-//  [51.4899, 3.5896], [51.4814, 3.5971], [51.4763, 3.6096],
-//  [51.4697, 3.6364], [51.4693, 3.6657], [51.4779, 3.7007],
-//  [51.4849, 3.7400], [51.4860, 3.7768], [51.5000, 3.8143],
-//  [51.5144, 3.8549], [51.5373, 3.8530], [51.5478, 3.8368],
-//  [51.5455, 3.8130], [51.5439, 3.7918], [51.5493, 3.7612],
-//  [51.5439, 3.7406], [51.5260, 3.7288], [51.5140, 3.7032],
-//  [51.5253, 3.6851], [51.5474, 3.6776], [51.5555, 3.6564],
-//  [51.5493, 3.6333], [51.5183, 3.5896], [51.4899, 3.5896]
-//  
-//], {
-//  color: '#4a90e2',        // ← Helderblauw ipv donker
-//  weight: 1.5,             // ← 1.5px ipv 3px
-//  fillColor: '#4a90e2',
-//  fillOpacity: 0.25,
-//  opacity: 0.9             // ← Rand transparant
-//}).bindPopup('<b>Nieuwerkerk gebied</b><br>245 slachtoffers').addTo(map);
-//einde demo
+//geojson gebieden ophalen
+fetch('/data/gebieden.geojson')
+  .then(response => response.json())
+  .then(data => {
+    L.geoJSON(data, {
+      style: function(feature) {
+        return {
+          color: '#4a90e2',
+          weight: 1.5,
+          fillColor: '#4a90e2',
+          fillOpacity: 0.25,
+          opacity: 0.9
+        };
+      },
+ //     onEachFeature: function(feature, layer) {
+ //       layer.bindPopup(`<b>${feature.properties.name}</b><br>${feature.properties.slachtoffers} slachtoffers`);
+ //     }
+    }
+  ).addTo(map);
+  });
 
 
 

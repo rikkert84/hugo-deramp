@@ -1,0 +1,736 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+            "title": "Goerree-Overflakkee",
+            "aantal_slachtoffers": 266
+            },
+            "id": "WATERSNOODRAMP_1953_GO_OVERSTROOMD_GEBIED.1",
+            "geometry": {
+                "type": "MultiPolygon",
+                "coordinates": [
+                    [
+                        [
+                            [
+                                3.9982,
+                                51.8341
+                            ],
+                            [
+                                3.9979,
+                                51.8341
+                            ],
+                            [
+                                3.9975,
+                                51.8344
+                            ],
+                            [
+                                3.9919,
+                                51.8356
+                            ],
+                            [
+                                3.9904,
+                                51.836
+                            ],
+                            [
+                                3.9871,
+                                51.8365
+                            ],
+                            [
+                                3.9807,
+                                51.8338
+                            ],
+                            [
+                                3.9636,
+                                51.8288
+                            ],
+                            [
+                                3.9579,
+                                51.8247
+                            ],
+                            [
+                                3.9459,
+                                51.8173
+                            ],
+                            [
+                                3.9488,
+                                51.8101
+                            ],
+                            [
+                                3.9489,
+                                51.8061
+                            ],
+                            [
+                                3.9362,
+                                51.8024
+                            ],
+                            [
+                                3.8973,
+                                51.8012
+                            ],
+                            [
+                                3.8974,
+                                51.8059
+                            ],
+                            [
+                                3.8943,
+                                51.8195
+                            ],
+                            [
+                                3.8799,
+                                51.8128
+                            ],
+                            [
+                                3.8748,
+                                51.8069
+                            ],
+                            [
+                                3.8754,
+                                51.8035
+                            ],
+                            [
+                                3.881,
+                                51.7996
+                            ],
+                            [
+                                3.8854,
+                                51.7938
+                            ],
+                            [
+                                3.8871,
+                                51.7918
+                            ],
+                            [
+                                3.9044,
+                                51.7963
+                            ],
+                            [
+                                3.9112,
+                                51.7946
+                            ],
+                            [
+                                3.9138,
+                                51.7958
+                            ],
+                            [
+                                3.9208,
+                                51.7975
+                            ],
+                            [
+                                3.9252,
+                                51.7979
+                            ],
+                            [
+                                3.9344,
+                                51.7987
+                            ],
+                            [
+                                3.9469,
+                                51.8013
+                            ],
+                            [
+                                3.9495,
+                                51.8034
+                            ],
+                            [
+                                3.9583,
+                                51.8046
+                            ],
+                            [
+                                3.9582,
+                                51.8046
+                            ],
+                            [
+                                3.9584,
+                                51.8046
+                            ],
+                            [
+                                3.9585,
+                                51.8046
+                            ],
+                            [
+                                3.9704,
+                                51.8047
+                            ],
+                            [
+                                3.9743,
+                                51.8011
+                            ],
+                            [
+                                3.9839,
+                                51.8013
+                            ],
+                            [
+                                3.9884,
+                                51.8029
+                            ],
+                            [
+                                3.9967,
+                                51.8051
+                            ],
+                            [
+                                4.0079,
+                                51.7998
+                            ],
+                            [
+                                4.011,
+                                51.8015
+                            ],
+                            [
+                                4.0183,
+                                51.7969
+                            ],
+                            [
+                                4.0193,
+                                51.7946
+                            ],
+                            [
+                                4.0218,
+                                51.7919
+                            ],
+                            [
+                                4.0357,
+                                51.7837
+                            ],
+                            [
+                                4.0342,
+                                51.7776
+                            ],
+                            [
+                                4.0329,
+                                51.7726
+                            ],
+                            [
+                                4.0349,
+                                51.7701
+                            ],
+                            [
+                                4.0392,
+                                51.7697
+                            ],
+                            [
+                                4.0432,
+                                51.7656
+                            ],
+                            [
+                                4.0458,
+                                51.7656
+                            ],
+                            [
+                                4.0461,
+                                51.7634
+                            ],
+                            [
+                                4.0569,
+                                51.7459
+                            ],
+                            [
+                                4.0585,
+                                51.74
+                            ],
+                            [
+                                4.0611,
+                                51.7345
+                            ],
+                            [
+                                4.0605,
+                                51.7304
+                            ],
+                            [
+                                4.0553,
+                                51.7252
+                            ],
+                            [
+                                4.0552,
+                                51.725
+                            ],
+                            [
+                                4.0554,
+                                51.725
+                            ],
+                            [
+                                4.0574,
+                                51.7185
+                            ],
+                            [
+                                4.0585,
+                                51.7159
+                            ],
+                            [
+                                4.0603,
+                                51.7115
+                            ],
+                            [
+                                4.0717,
+                                51.7071
+                            ],
+                            [
+                                4.0792,
+                                51.7085
+                            ],
+                            [
+                                4.0857,
+                                51.7083
+                            ],
+                            [
+                                4.0957,
+                                51.7068
+                            ],
+                            [
+                                4.1032,
+                                51.708
+                            ],
+                            [
+                                4.1238,
+                                51.7067
+                            ],
+                            [
+                                4.1278,
+                                51.7044
+                            ],
+                            [
+                                4.1322,
+                                51.7038
+                            ],
+                            [
+                                4.1559,
+                                51.6967
+                            ],
+                            [
+                                4.1682,
+                                51.6825
+                            ],
+                            [
+                                4.19,
+                                51.6829
+                            ],
+                            [
+                                4.1937,
+                                51.679
+                            ],
+                            [
+                                4.2203,
+                                51.6741
+                            ],
+                            [
+                                4.2332,
+                                51.671
+                            ],
+                            [
+                                4.236,
+                                51.665
+                            ],
+                            [
+                                4.2751,
+                                51.6587
+                            ],
+                            [
+                                4.2946,
+                                51.6611
+                            ],
+                            [
+                                4.3185,
+                                51.6608
+                            ],
+                            [
+                                4.3407,
+                                51.6656
+                            ],
+                            [
+                                4.3546,
+                                51.6702
+                            ],
+                            [
+                                4.3517,
+                                51.6756
+                            ],
+                            [
+                                4.3656,
+                                51.6797
+                            ],
+                            [
+                                4.363,
+                                51.6824
+                            ],
+                            [
+                                4.3536,
+                                51.6831
+                            ],
+                            [
+                                4.3439,
+                                51.6901
+                            ],
+                            [
+                                4.3282,
+                                51.7032
+                            ],
+                            [
+                                4.3149,
+                                51.7079
+                            ],
+                            [
+                                4.2973,
+                                51.7169
+                            ],
+                            [
+                                4.2892,
+                                51.7176
+                            ],
+                            [
+                                4.2645,
+                                51.7263
+                            ],
+                            [
+                                4.2432,
+                                51.7443
+                            ],
+                            [
+                                4.2137,
+                                51.7591
+                            ],
+                            [
+                                4.1919,
+                                51.7736
+                            ],
+                            [
+                                4.1612,
+                                51.7796
+                            ],
+                            [
+                                4.1761,
+                                51.7691
+                            ],
+                            [
+                                4.1251,
+                                51.7881
+                            ],
+                            [
+                                4.056,
+                                51.8023
+                            ],
+                            [
+                                4.0429,
+                                51.8057
+                            ],
+                            [
+                                4.03,
+                                51.8142
+                            ],
+                            [
+                                4.0224,
+                                51.8184
+                            ],
+                            [
+                                4.0138,
+                                51.8266
+                            ],
+                            [
+                                4.0055,
+                                51.8317
+                            ],
+                            [
+                                4.0016,
+                                51.8326
+                            ],
+                            [
+                                3.9982,
+                                51.8341
+                            ]
+                        ],
+                        [
+                            [
+                                4.0865,
+                                51.7795
+                            ],
+                            [
+                                4.0807,
+                                51.7822
+                            ],
+                            [
+                                4.099,
+                                51.7865
+                            ],
+                            [
+                                4.1123,
+                                51.7847
+                            ],
+                            [
+                                4.1059,
+                                51.7672
+                            ],
+                            [
+                                4.1026,
+                                51.751
+                            ],
+                            [
+                                4.1044,
+                                51.7492
+                            ],
+                            [
+                                4.1053,
+                                51.7492
+                            ],
+                            [
+                                4.1084,
+                                51.7432
+                            ],
+                            [
+                                4.1114,
+                                51.7335
+                            ],
+                            [
+                                4.115,
+                                51.7269
+                            ],
+                            [
+                                4.1035,
+                                51.7198
+                            ],
+                            [
+                                4.0927,
+                                51.7173
+                            ],
+                            [
+                                4.0838,
+                                51.7207
+                            ],
+                            [
+                                4.0696,
+                                51.7332
+                            ],
+                            [
+                                4.062,
+                                51.7372
+                            ],
+                            [
+                                4.0654,
+                                51.753
+                            ],
+                            [
+                                4.0607,
+                                51.7529
+                            ],
+                            [
+                                4.0541,
+                                51.7668
+                            ],
+                            [
+                                4.0621,
+                                51.7704
+                            ],
+                            [
+                                4.0612,
+                                51.7732
+                            ],
+                            [
+                                4.0556,
+                                51.7761
+                            ],
+                            [
+                                4.0741,
+                                51.7774
+                            ],
+                            [
+                                4.096,
+                                51.7764
+                            ],
+                            [
+                                4.0865,
+                                51.7795
+                            ]
+                        ],
+                        [
+                            [
+                                4.108,
+                                51.7665
+                            ],
+                            [
+                                4.1123,
+                                51.7771
+                            ],
+                            [
+                                4.1273,
+                                51.7737
+                            ],
+                            [
+                                4.1294,
+                                51.7682
+                            ],
+                            [
+                                4.1418,
+                                51.7638
+                            ],
+                            [
+                                4.1426,
+                                51.7619
+                            ],
+                            [
+                                4.1407,
+                                51.7619
+                            ],
+                            [
+                                4.1361,
+                                51.7607
+                            ],
+                            [
+                                4.1326,
+                                51.7559
+                            ],
+                            [
+                                4.1267,
+                                51.754
+                            ],
+                            [
+                                4.1224,
+                                51.7579
+                            ],
+                            [
+                                4.1169,
+                                51.7577
+                            ],
+                            [
+                                4.1141,
+                                51.7551
+                            ],
+                            [
+                                4.1114,
+                                51.7557
+                            ],
+                            [
+                                4.1058,
+                                51.7546
+                            ],
+                            [
+                                4.1055,
+                                51.7535
+                            ],
+                            [
+                                4.108,
+                                51.7665
+                            ]
+                        ]
+                    ]
+                ]
+            },
+            "geometry_name": "Shape",
+            "properties": {
+                "GDB_GEOMATTR_DATA": null
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "WATERSNOODRAMP_1953_GO_OVERSTROOMD_GEBIED.2",
+            "geometry": {
+                "type": "MultiPolygon",
+                "coordinates": [
+                    [
+                        [
+                            [
+                                3.9584,
+                                51.8046
+                            ],
+                            [
+                                3.9584,
+                                51.8046
+                            ],
+                            [
+                                3.9583,
+                                51.8046
+                            ],
+                            [
+                                3.9583,
+                                51.8046
+                            ],
+                            [
+                                3.9584,
+                                51.8046
+                            ]
+                        ]
+                    ]
+                ]
+            },
+            "geometry_name": "Shape",
+            "properties": {
+                "GDB_GEOMATTR_DATA": null
+            }
+        }
+    ],
+    "numberMatched": 2,
+    "numberReturned": 2,
+    "timeStamp": "2026-02-26T12:58:43.244Z",
+    "links": [
+        {
+            "title": "This document as text/html",
+            "type": "text/html",
+            "rel": "alternate",
+            "href": "https://geodata.zuid-holland.nl/geoserver/ogc/features/v1/collections/cultuur%3AWATERSNOODRAMP_1953_GO_OVERSTROOMD_GEBIED/items?f=text%2Fhtml"
+        },
+        {
+            "title": "This document as application/x-gpkg",
+            "type": "application/x-gpkg",
+            "rel": "alternate",
+            "href": "https://geodata.zuid-holland.nl/geoserver/ogc/features/v1/collections/cultuur%3AWATERSNOODRAMP_1953_GO_OVERSTROOMD_GEBIED/items?f=application%2Fx-gpkg"
+        },
+        {
+            "title": "This document as application/geopackage+sqlite3",
+            "type": "application/geopackage+sqlite3",
+            "rel": "alternate",
+            "href": "https://geodata.zuid-holland.nl/geoserver/ogc/features/v1/collections/cultuur%3AWATERSNOODRAMP_1953_GO_OVERSTROOMD_GEBIED/items?f=application%2Fgeopackage%2Bsqlite3"
+        },
+        {
+            "title": "This document as application/vnd.google-earth.kml+xml",
+            "type": "application/vnd.google-earth.kml+xml",
+            "rel": "alternate",
+            "href": "https://geodata.zuid-holland.nl/geoserver/ogc/features/v1/collections/cultuur%3AWATERSNOODRAMP_1953_GO_OVERSTROOMD_GEBIED/items?f=application%2Fvnd.google-earth.kml%2Bxml"
+        },
+        {
+            "title": "This document as application/vnd.ogc.fg+json",
+            "type": "application/vnd.ogc.fg+json",
+            "rel": "alternate",
+            "href": "https://geodata.zuid-holland.nl/geoserver/ogc/features/v1/collections/cultuur%3AWATERSNOODRAMP_1953_GO_OVERSTROOMD_GEBIED/items?f=application%2Fvnd.ogc.fg%2Bjson"
+        },
+        {
+            "title": "This document",
+            "type": "application/geo+json",
+            "rel": "self",
+            "href": "https://geodata.zuid-holland.nl/geoserver/ogc/features/v1/collections/cultuur%3AWATERSNOODRAMP_1953_GO_OVERSTROOMD_GEBIED/items?f=application%2Fgeo%2Bjson"
+        },
+        {
+            "title": "This document as application/gml+xml;version=3.2",
+            "type": "application/gml+xml;version=3.2",
+            "rel": "alternate",
+            "href": "https://geodata.zuid-holland.nl/geoserver/ogc/features/v1/collections/cultuur%3AWATERSNOODRAMP_1953_GO_OVERSTROOMD_GEBIED/items?f=application%2Fgml%2Bxml%3Bversion%3D3.2"
+        },
+        {
+            "title": "This document as text/csv",
+            "type": "text/csv",
+            "rel": "alternate",
+            "href": "https://geodata.zuid-holland.nl/geoserver/ogc/features/v1/collections/cultuur%3AWATERSNOODRAMP_1953_GO_OVERSTROOMD_GEBIED/items?f=text%2Fcsv"
+        },
+        {
+            "title": "This document as application/json",
+            "type": "application/json",
+            "rel": "alternate",
+            "href": "https://geodata.zuid-holland.nl/geoserver/ogc/features/v1/collections/cultuur%3AWATERSNOODRAMP_1953_GO_OVERSTROOMD_GEBIED/items?f=application%2Fjson"
+        },
+        {
+            "title": "The collection description as application/json",
+            "type": "application/json",
+            "rel": "collection",
+            "href": "https://geodata.zuid-holland.nl/geoserver/ogc/features/v1/collections/cultuur%3AWATERSNOODRAMP_1953_GO_OVERSTROOMD_GEBIED?f=application%2Fjson"
+        },
+        {
+            "title": "The collection description as application/yaml",
+            "type": "application/yaml",
+            "rel": "collection",
+            "href": "https://geodata.zuid-holland.nl/geoserver/ogc/features/v1/collections/cultuur%3AWATERSNOODRAMP_1953_GO_OVERSTROOMD_GEBIED?f=application%2Fyaml"
+        },
+        {
+            "title": "The collection description as text/html",
+            "type": "text/html",
+            "rel": "collection",
+            "href": "https://geodata.zuid-holland.nl/geoserver/ogc/features/v1/collections/cultuur%3AWATERSNOODRAMP_1953_GO_OVERSTROOMD_GEBIED?f=text%2Fhtml"
+        }
+    ]
+}

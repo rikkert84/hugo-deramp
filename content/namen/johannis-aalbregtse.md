@@ -2,9 +2,9 @@
 title: 'Johannis Aalbregtse'
 sorteren: 'Aalbregtse, Johannis'
 geboorteplaats: 'Nieuwerkerk'
-geboortedatum: '1919-12-19'
+geboortedatum: 1919-12-19
 overlijdensplaats: 'Nieuwerkerk'
-overlijdensdatum: '1953-02-01'
+overlijdensdatum: 1953-02-01
 plaatsnaam:
   - nieuwerkerk
 plaatsen:

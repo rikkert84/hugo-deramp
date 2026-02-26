@@ -1,5 +1,5 @@
-# baseURL: 'https://ramp.nl/'
-baseURL: 'https://helpful-vacherin-6b17cd.netlify.app/'
+baseURL: 'https://deramp.vanloo.cloud/'
+# baseURL: 'https://helpful-vacherin-6b17cd.netlify.app/'
 languageCode: 'nl-NL'
 title: 'Namen Watersnoodramp 1953'
 pagination.pagerSize: 2
